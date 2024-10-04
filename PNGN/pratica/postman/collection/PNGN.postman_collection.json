@@ -1,0 +1,342 @@
+{
+	"info": {
+		"_postman_id": "2fd49e2c-e4ef-4ffc-be91-b8499116e264",
+		"name": "PNGN",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17800266"
+	},
+	"item": [
+		{
+			"name": "Autenticação",
+			"item": [
+				{
+					"name": "Geração do token de acesso",
+					"item": [
+						{
+							"name": "200 Retorna o token de acesso",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const statusCode = 200;\r",
+											"const response = pm.response.json();\r",
+											"const schema = {\r",
+											"  \"type\": \"object\",\r",
+											"  \"properties\": {\r",
+											"    \"access_token\": {\r",
+											"      \"type\": \"string\"\r",
+											"    },\r",
+											"    \"expires_in\": {\r",
+											"      \"type\": \"number\"\r",
+											"    },\r",
+											"    \"token_type\": {\r",
+											"      \"type\": \"string\"\r",
+											"    },\r",
+											"    \"scope\": {\r",
+											"      \"type\": \"string\"\r",
+											"    }\r",
+											"  },\r",
+											"  \"required\": [\r",
+											"    \"access_token\",\r",
+											"    \"expires_in\",\r",
+											"    \"token_type\",\r",
+											"    \"scope\"\r",
+											"  ]\r",
+											"};\r",
+											"\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is \" + statusCode, function () {\r",
+											"    pm.response.to.have.status(statusCode);\r",
+											"    pm.environment.set(\"token\", response.access_token);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validate backend response\", function () {\r",
+											"    pm.expect(response.access_token).to.exist;\r",
+											"    pm.expect(response.expires_in).to.exist;\r",
+											"    pm.expect(response.token_type).to.exist;\r",
+											"    pm.expect(response.scope).to.exist;\r",
+											"});\r",
+											"\r",
+											"pm.test('Schema is valid', function() {\r",
+											"  pm.response.to.have.jsonSchema(schema);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Generated token is valid\", function () {\r",
+											"    pm.expect(response.access_token).to.be.a('string').that.is.not.empty;\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "c2d6a06f-5f31-448b-9079-7e170e8536e4",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "67823c6d-58de-494f-96d9-86a4c22682cb",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-type",
+										"value": "\"application/x-www-form-urlencoded\"",
+										"type": "text"
+									},
+									{
+										"key": "token_type",
+										"value": "\"Bearer\"",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/auth/oauth/v2/token?scope=\"oob\"&grant_type=client_credentials",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"oauth",
+										"v2",
+										"token"
+									],
+									"query": [
+										{
+											"key": "scope",
+											"value": "\"oob\""
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "400 Requisição inválida",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const statusCode = 400;\r",
+											"const response = pm.response.json();\r",
+											"const schema = {\r",
+											"  \"type\": \"object\",\r",
+											"  \"properties\": {\r",
+											"    \"error\": {\r",
+											"      \"type\": \"string\"\r",
+											"    },\r",
+											"    \"error_description\": {\r",
+											"      \"type\": \"string\"\r",
+											"    }\r",
+											"  },\r",
+											"  \"required\": [\r",
+											"    \"error\",\r",
+											"    \"error_description\"\r",
+											"  ]\r",
+											"};\r",
+											"\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is \" + statusCode, function () {\r",
+											"    pm.response.to.have.status(statusCode);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validate backend response\", function () {\r",
+											"    pm.expect(response.error).to.exist;\r",
+											"    pm.expect(response.error_description).to.exist;\r",
+											"});\r",
+											"\r",
+											"pm.test('Schema is valid', function() {\r",
+											"  pm.response.to.have.jsonSchema(schema);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "c2d6a06f-5f31-448b-9079-7e170e8536e4",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "67823c6d-58de-494f-96d9-86a4c22682cb",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-type",
+										"value": "\"application/x-www-form-urlencoded\"",
+										"type": "text"
+									},
+									{
+										"key": "token_type",
+										"value": "\"Bearer\"",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/auth/oauth/v2/token?scope=\"oob\"",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"oauth",
+										"v2",
+										"token"
+									],
+									"query": [
+										{
+											"key": "scope",
+											"value": "\"oob\""
+										},
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "401 Não autorizado",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const statusCode = 401;\r",
+											"const response = pm.response.json();\r",
+											"const schema = {\r",
+											"  \"type\": \"object\",\r",
+											"  \"properties\": {\r",
+											"    \"error\": {\r",
+											"      \"type\": \"string\"\r",
+											"    },\r",
+											"    \"error_description\": {\r",
+											"      \"type\": \"string\"\r",
+											"    }\r",
+											"  },\r",
+											"  \"required\": [\r",
+											"    \"error\",\r",
+											"    \"error_description\"\r",
+											"  ]\r",
+											"};\r",
+											"\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is \" + statusCode, function () {\r",
+											"    pm.response.to.have.status(statusCode);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validate backend response\", function () {\r",
+											"    pm.expect(response.error).to.exist;\r",
+											"    pm.expect(response.error_description).to.exist;\r",
+											"});\r",
+											"\r",
+											"pm.test('Schema is valid', function() {\r",
+											"  pm.response.to.have.jsonSchema(schema);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "c2d6a06f-5f31-448b-9079-7e170e8536e4",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "67823c6d-58de-494f-96d9-86a4c22682cb",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-type",
+										"value": "\"application/x-www-form-urlencoded\"",
+										"type": "text"
+									},
+									{
+										"key": "token_type",
+										"value": "\"Bearer\"",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/auth/oauth/v2/token?scope=\"oob\"&grant_type=\"client_credentials\"",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"oauth",
+										"v2",
+										"token"
+									],
+									"query": [
+										{
+											"key": "scope",
+											"value": "\"oob\""
+										},
+										{
+											"key": "grant_type",
+											"value": "\"client_credentials\""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
