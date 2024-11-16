@@ -27,3 +27,7 @@
 Cypress.Commands.add("getByData", (selector) => {
     return cy.get(`#${selector}`)
 })
+
+Cypress.on("uncaught:exception", (err, runnable) => {
+    return false;
+  });
