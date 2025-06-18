@@ -1,0 +1,40 @@
+name: Cypress E2E Tests - Demoblaze
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10 # Aumenta o timeout padrão
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          headless: true
+          config: {
+            "baseUrl": "https://www.demoblaze.com",
+            "video": true,
+            "retries": {
+              "runMode": 1,
+              "openMode": 0
+            }
+          }
+        env:
+          # Configurações para evitar problemas com o Demoblaze
+          CYPRESS_FAIL_FAST: false
+          CYPRESS_PAGE_LOAD_TIMEOUT: 60000
